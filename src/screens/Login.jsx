@@ -13,21 +13,32 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
 
   // 🔹 Manual Email/Password login
-  const onSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      setLoading(true)
-      const result = await signInWithEmailAndPassword(auth, email, password)
-      const user = result.user
+const onSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+
+  try {
+    // 👉 First check if it's the hardcoded credentials
+    if (email === "selva@gmail.com" && password === "Selva@123") {
+      const user = { email, displayName: "Selvaganesh (Local User)" }
       localStorage.setItem("user", JSON.stringify(user))
       nav('/home')
-    } catch (err) {
-      console.error("Manual login failed:", err)
-      alert("Invalid email or password")
-    } finally {
-      setLoading(false)
+      return;
     }
+
+    // 👉 Otherwise, try Firebase auth
+    const result = await signInWithEmailAndPassword(auth, email, password)
+    const user = result.user
+    localStorage.setItem("user", JSON.stringify(user))
+    nav('/home')
+
+  } catch (err) {
+    console.error("Manual login failed:", err)
+    alert("Invalid email or password")
+  } finally {
+    setLoading(false)
   }
+}
 
   // 🔹 Google login
   const handleGoogleLogin = async () => {
@@ -46,12 +57,21 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen p-5 flex items-center justify-center">
-      <Paper className="w-full max-w-sm p-6 rounded-2xl space-y-4 shadow-lg">
-        <div className="text-xl font-semibold text-center">Welcome back</div>
+    <div 
+      className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
+      style={{ backgroundImage: "url('/background.jpg')" }} // 🔹 same as home page
+    >
+      {/* Dark Overlay for readability */}
+      <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+
+      <Paper 
+        className="w-full max-w-sm p-8 rounded-2xl space-y-5 shadow-2xl relative z-10"
+        style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(10px)" }}
+      >
+        <div className="text-2xl font-bold text-center text-white">Welcome back</div>
         
         {/* Manual Login Form */}
-        <form onSubmit={onSubmit} className="space-y-3">
+        <form onSubmit={onSubmit} className="space-y-4">
           <TextField 
             label="Email" 
             fullWidth 
@@ -59,6 +79,8 @@ export default function Login() {
             type="email" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
+            InputProps={{ style: { color: "white" } }}
+            InputLabelProps={{ style: { color: "#ccc" } }}
           />
           <TextField 
             label="Password" 
@@ -67,19 +89,22 @@ export default function Login() {
             type="password" 
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
+            InputProps={{ style: { color: "white" } }}
+            InputLabelProps={{ style: { color: "#ccc" } }}
           />
           <Button 
             type="submit" 
             fullWidth 
             variant="contained"
+            style={{ backgroundColor: "#1976d2", color: "#fff", fontWeight: "bold" }}
             disabled={loading}
           >
             {loading ? "Signing in..." : "Sign in"}
           </Button>
         </form>
 
-        <div className="flex items-center justify-center">
-          <span className="text-gray-500">OR</span>
+        <div className="flex items-center justify-center text-gray-300">
+          <span>OR</span>
         </div>
 
         {/* Google Login Button */}
@@ -88,6 +113,7 @@ export default function Login() {
           fullWidth
           variant="outlined"
           startIcon={<GoogleIcon />}
+          style={{ color: "white", borderColor: "white" }}
           disabled={loading}
         >
           {loading ? "Signing in..." : "Continue with Google"}

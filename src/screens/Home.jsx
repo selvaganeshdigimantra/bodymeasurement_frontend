@@ -1,98 +1,68 @@
-// import React from 'react'
-// import Card from '@mui/material/Card'
-// import CardContent from '@mui/material/CardContent'
-// import Chip from '@mui/material/Chip'
-// import { useNavigate } from 'react-router-dom'
-// import TopAppBar from '../components/TopAppBar'
-// import BottomBar from '../components/BottomBar'
-// import SearchSheet from '../components/SearchSheet'
-// import { items } from '../data/mock'
-
-// export default function Home() {
-//   const nav = useNavigate()
-//   const [open, setOpen] = React.useState(false)
-
-//   return (
-//     <div className="pb-28">
-//       <TopAppBar title="Home" onSearch={() => setOpen(true)} />
-//       <div className="pt-20 px-4 space-y-3">
-//         {items.map(i => (
-//           <Card key={i.id} onClick={() => nav('/detail/' + i.id)} className="rounded-2xl bg-neutral-900">
-//             <CardContent className="flex items-center justify-between">
-//               <div>
-//                 <div className="font-semibold">{i.title}</div>
-//                 <div className="text-sm text-neutral-400">{i.subtitle}</div>
-//               </div>
-//               <Chip label={i.status} color="primary" variant="outlined" />
-//             </CardContent>
-//           </Card>
-//         ))}
-//       </div>
-//       <BottomBar />
-//       <SearchSheet open={open} onClose={() => setOpen(false)} onPick={(r) => { setOpen(false); nav('/detail/'+r.id) }} />
-//     </div>
-//   )
-// }
-
-
-
-
-import React from 'react'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import Chip from '@mui/material/Chip'
-import { useNavigate } from 'react-router-dom'
-import TopAppBar from '../components/TopAppBar'
-import BottomBar from '../components/BottomBar'
-import SearchSheet from '../components/SearchSheet'
-import { items } from '../data/mock'
-import { motion } from 'framer-motion'
+// Home.jsx
+import React from "react";
+import { Card, CardContent } from "@mui/material";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import BottomBar from "../components/BottomBar";
 
 export default function Home() {
-  const nav = useNavigate()
-  const [open, setOpen] = React.useState(false)
+  const nav = useNavigate();
 
-  const getChipColor = (status) => {
-    switch (status) {
-      case 'Open': return 'success'
-      case 'Paused': return 'warning'
-      case 'Done': return 'info'
-      default: return 'default'
-    }
-  }
+  const menuItems = [
+    // { id: 1, title: "BMI calculator", path: "/bmi" },
+    { id: 2, title: "Find My Size", path: "/measurements" },
+    // { id: 3, title: "Body Fat calculator", path: "/body-fat" },
+    // { id: 4, title: "Body Shape", path: "/shape" },
+    // { id: 5, title: "TDEE", path: "/tdee" },
+    // { id: 6, title: "Body Stat", path: "/stats" },
+    // { id: 7, title: "Celebs look alike me!", path: "/celebs" },
+  ];
 
   return (
-    <div className="pb-28">
-      <div className="flex items-center justify-center min-h-screen text-3xl font-bold">
-      🎉 Welcome to Dashboard
-      </div>
-      {/* <TopAppBar title="Home" onSearch={() => setOpen(true)} />
-      <div className="pt-20 px-4 space-y-4">
-        {items.map((i, idx) => (
-          <motion.div
-            key={i.id}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
-          >
-            <Card 
-              onClick={() => nav('/detail/' + i.id)} 
-              className="rounded-3xl bg-white/20 backdrop-blur-md shadow-lg border border-white/30"
-            >
-              <CardContent className="flex items-center justify-between text-white">
-                <div>
-                  <div className="font-bold text-lg">{i.title}</div>
-                  <div className="text-sm opacity-80">{i.subtitle}</div>
-                </div>
-                <Chip label={i.status} color={getChipColor(i.status)} />
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </div> */}
-      <BottomBar />
-      {/* <SearchSheet open={open} onClose={() => setOpen(false)} onPick={(r) => { setOpen(false); nav('/detail/'+r.id) }} /> */}
-    </div>
-  )
-}
+    <div className="pb-28 relative min-h-screen">
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/bg-pattern.png')", // place your image in public/bg-pattern.png
+        }}
+      />
 
+      {/* Overlay for readability */}
+      <div className="absolute inset-0 bg-blue-600/70" />
+
+      <div className="relative z-10 px-6 pt-12">
+        {/* Header */}
+        <h1 className="text-white text-2xl font-bold mb-8">My Body Tracking</h1>
+
+        {/* Menu list */}
+        <div className="space-y-4">
+          {menuItems.map((item, idx) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+            >
+              <Card
+                onClick={() => nav(item.path)}
+                className="rounded-xl bg-black/70 backdrop-blur-md border border-white/20 cursor-pointer hover:bg-black/80 transition"
+              >
+                <CardContent className="flex items-center justify-between text-white">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-lg">⭐</span>
+                    <span className="font-medium">{item.title}</span>
+                  </div>
+                  <span className="text-xl">›</span>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom navigation */}
+      <BottomBar />
+    </div>
+  );
+}
