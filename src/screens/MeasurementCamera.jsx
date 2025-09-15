@@ -5,7 +5,11 @@ import * as posedetection from "@tensorflow-models/pose-detection";
 import * as tf from "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-backend-webgl";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import { Circles } from "react-loader-spinner";
+=======
+// import { Circles } from "react-loader-spinner";
+>>>>>>> 004f14d (UI Code)
 import { ImCamera } from "react-icons/im";
 
 /*
