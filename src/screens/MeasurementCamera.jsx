@@ -5,7 +5,7 @@ import * as posedetection from "@tensorflow-models/pose-detection";
 import * as tf from "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-backend-webgl";
 import { useNavigate } from "react-router-dom";
-// import { Circles } from "react-loader-spinner";
+import { Circles } from "react-loader-spinner";
 import { ImCamera } from "react-icons/im";
 
 /*
@@ -241,11 +241,11 @@ export default function MeasurementCamera({ onBack, mode = "front" }) {
       )}
 
       {/* Loading model spinner */}
-      {/* {loadingModel && (
+      {loadingModel && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-60 text-white/90 p-3 rounded-md bg-black/60">
           <Circles height="100" width="100" color="#ffffffff" ariaLabel="loading" />
         </div>
-      )} */}
+      )}
     </div>
   );
 }
