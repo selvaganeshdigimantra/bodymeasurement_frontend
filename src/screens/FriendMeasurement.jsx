@@ -417,7 +417,8 @@ export default function FriendMeasurement({ onBack }) {
                 playsInline
                 className="w-full"
                 controls
-                src="../../public/video.mp4"
+                // src="../../public/video.mp4"
+                src="/video.mp4"
               />
             </div>
 
