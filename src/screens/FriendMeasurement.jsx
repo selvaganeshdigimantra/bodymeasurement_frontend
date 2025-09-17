@@ -331,13 +331,13 @@ import { useNavigate } from "react-router-dom";
 
 export default function FriendMeasurement({ onBack }) {
   const nav = useNavigate();
-  const [showPermission, setShowPermission] = useState(true);
-  const [showVideo, setShowVideo] = useState(false);
+  // const [showPermission, setShowPermission] = useState(true);
+  // const [showVideo, setShowVideo] = useState(false);
 
-  const handlePermission = () => {
-    setShowPermission(false);
-    setShowVideo(true);
-  };
+  // const handlePermission = () => {
+  //   setShowPermission(false);
+  //   setShowVideo(true);
+  // };
 
   const handleOpenCamera = () => {
     // navigate to front-capture route which uses MeasurementCamera(mode="front")
@@ -360,7 +360,7 @@ export default function FriendMeasurement({ onBack }) {
         </button>
 
         {/* Permission Popup */}
-        {showPermission && (
+        {/* {showPermission && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -393,10 +393,10 @@ export default function FriendMeasurement({ onBack }) {
               </div>
             </div>
           </motion.div>
-        )}
+        )} */}
 
         {/* Video Instructions */}
-        {showVideo && (
+        {/* {showVideo && ( */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -432,7 +432,7 @@ export default function FriendMeasurement({ onBack }) {
               </button>
             </div>
           </motion.div>
-        )}
+        {/* )} */}
       </div>
     </div>
   );

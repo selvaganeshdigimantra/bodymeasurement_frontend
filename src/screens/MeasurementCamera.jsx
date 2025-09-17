@@ -18,14 +18,15 @@ export default function MeasurementCamera({ onBack, mode = "front" }) {
   const webcamRef = useRef(null);
   const detectorRef = useRef(null);
   const rafRef = useRef(null);
-
+const [permissionDenied, setPermissionDenied] = useState(false);
+const redirectTimer = useRef(null);
   const [loadingModel, setLoadingModel] = useState(true);
   const [accuracy, setAccuracy] = useState(0);
   const [captured, setCaptured] = useState(null);
   const [processing, setProcessing] = useState(false);
 
   // Same threshold you used
-  const ACC_THRESHOLD = 60;
+  const ACC_THRESHOLD = 95;
 
   // Instruction texts (match your screenshots)
   const instructionText =
@@ -36,6 +37,35 @@ export default function MeasurementCamera({ onBack, mode = "front" }) {
   // Top title
   const titleText = mode === "front" ? "POSTURE 1/2" : "POSTURE 2/2";
 
+useEffect(() => {
+  const checkCameraPermission = async () => {
+    try {
+      const status = await navigator.permissions.query({ name: "camera" });
+
+      if (status.state === "denied") {
+        setPermissionDenied(true);
+        // redirectTimer.current = setTimeout(() => nav("/measurements"), 2000);
+        return;
+      }
+
+      status.onchange = () => {
+        console.log("Camera permission changed:", status.state);
+        if (status.state === "denied") {
+          setPermissionDenied(true);
+          redirectTimer.current = setTimeout(() => nav("/measurements"), 2000);
+        }
+      };
+    } catch (err) {
+      console.error("Permission check failed:", err);
+    }
+  };
+
+  checkCameraPermission();
+
+  return () => {
+    if (redirectTimer.current) clearTimeout(redirectTimer.current);
+  };
+}, [nav]);
   // Load MoveNet detector (same as your original code)
   useEffect(() => {
     let mounted = true;
@@ -142,6 +172,37 @@ export default function MeasurementCamera({ onBack, mode = "front" }) {
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
+      
+{permissionDenied && (
+  <div className="absolute inset-0 bg-black/90 z-50 flex flex-col items-center justify-center">
+    <div className="text-center text-white px-6 max-w-md">
+      <p className="text-lg font-semibold">Camera access is blocked</p>
+      <p className="text-sm opacity-80 mt-2">
+        To continue, please reset camera permission from your browser:
+      </p>
+
+      {/* Step guide */}
+      <div className="mt-4 bg-white/10 rounded-xl p-4 text-left text-sm space-y-2">
+        <p>1. Click the <strong>🔒 lock icon</strong> near the address bar.</p>
+        <p>2. Find <strong>Camera</strong> in the menu.</p>
+        <p>3. Click <span className="bg-white text-black px-2 py-0.5 rounded">Reset permission</span>.</p>
+      </div>
+
+      {/* Action buttons */}
+      <div className="flex justify-center mt-6">
+  <button
+    onClick={() => nav("/measurements")}
+    className="px-4 py-2 bg-green-500 text-white rounded-lg shadow"
+  >
+    Go Back Now
+  </button>
+</div>
+
+    </div>
+  </div>
+)}
+
+
       {/* Top-left close (circle X) */}
       <button
         onClick={() => {
