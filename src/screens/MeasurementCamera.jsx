@@ -26,7 +26,7 @@ const redirectTimer = useRef(null);
   const [processing, setProcessing] = useState(false);
 
   // Same threshold you used
-  const ACC_THRESHOLD = 95;
+  const ACC_THRESHOLD = 80;
 
   // Instruction texts (match your screenshots)
   const instructionText =
