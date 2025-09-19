@@ -6,7 +6,7 @@ import logo from '../../public/logo.png';
 export default function Splash() {
   const nav = useNavigate()
   React.useEffect(() => {
-    const t = setTimeout(() => nav('/login'), 2000)
+    const t = setTimeout(() => nav('/home'), 2000)
     return () => clearTimeout(t)
   }, [nav])
 
